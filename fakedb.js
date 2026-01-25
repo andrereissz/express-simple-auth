@@ -2,11 +2,11 @@ export let db = {
     users: [
         {
             username: "user1",
-            password: "password1"
+            password: "$2a$10$I3qJNfyMhJFI4kTr3jlysuodr3CdOyLTkVIEEH1fyXWDbPOgLm9X2"
         },
         {
             username: "user2",
-            password: "password2"
+            password: "$2a$10$I3qJNfyMhJFI4kTr3jlysuodr3CdOyLTkVIEEH1fyXWDbPOgLm9X2"
         }
     ]
 }
