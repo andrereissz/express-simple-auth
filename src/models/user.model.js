@@ -15,11 +15,15 @@ export let db = {
 
 export function findUserByUsername(username) {
     const user = db.users.find(user => user.username == username);
-
     return user;
 }
 
 export function createUser(username, password) {
     const uuid = crypto.randomUUID();
     db.users.push({ id: uuid, username: username, password: password });
+}
+
+export function storeUserRefreshToken(userId, refreshToken) {
+    const user = db.users.find(user => user.id == userId);
+    user.refresh_token = refreshToken;
 }
