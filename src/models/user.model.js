@@ -1,4 +1,4 @@
-export let db = {
+let db = {
     users: [
         {
             id: "e2a15d35-3870-4b54-9ace-ba35f65e8d0e",
@@ -11,19 +11,55 @@ export let db = {
             password: "$2a$10$I3qJNfyMhJFI4kTr3jlysuodr3CdOyLTkVIEEH1fyXWDbPOgLm9X2"
         }
     ]
-}
+};
 
-export function findUserByUsername(username) {
-    const user = db.users.find(user => user.username == username);
-    return user;
-}
+class User {
 
-export function createUser(username, password) {
-    const uuid = crypto.randomUUID();
-    db.users.push({ id: uuid, username: username, password: password });
-}
+    static create(username, password) {
+        const uuid = crypto.randomUUID();
+        db.users.push({ id: uuid, username: username, password: password });
+    }
 
-export function storeUserRefreshToken(userId, refreshToken) {
-    const user = db.users.find(user => user.id == userId);
-    user.refresh_token = refreshToken;
-}
+    static find(userId) {
+        const user = db.users.find(user => user.id == userId);
+
+        if(user) {
+            return user;
+        }   
+    }
+
+    static findByUsername(username) {
+        const user = db.users.find(user => user.username == username);
+        
+        if(user) {
+            return user;
+        }
+    }
+
+    static delete(userId) {
+        const user = db.users.find(user => user.id == userId);
+
+        if (user) {
+            db.users.splice(user);
+        }
+    }
+
+    static update(userId, data) {
+        const user = db.users.find(user => user.id == userId);
+
+        if (user) {
+            user.username = data.username;
+            user.password = data.password;
+        }
+    }
+
+    static storeRefreshToken(userId, refreshToken) {
+        const user = db.users.find(user => user.id == userId);
+
+        if (user) {
+            user.refresh_token = refreshToken;
+        }
+    }
+};
+
+export default User;

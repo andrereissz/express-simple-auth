@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
+import User from '../models/user.model.js'
 import * as hash from '../utils/hash.js';
-import * as fakedb from '../models/user.model.js';
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
@@ -11,7 +11,7 @@ class AuthController {
 
         const { username, password } = req.body;
 
-        const user = fakedb.findUserByUsername(username);
+        const user = User.findByUsername(username);
 
         if (!user) {
             return res.status(404).send('User not Found');
@@ -26,7 +26,7 @@ class AuthController {
         const accessToken = jwt.sign({ userId: user.id, username: user.username }, ACCESS_TOKEN_SECRET, { expiresIn: '10s' });
         const refreshToken = jwt.sign({ userId: user.id }, REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
-        fakedb.storeUserRefreshToken(user.id, refreshToken);
+        User.storeRefreshToken(user.id, refreshToken);
 
         res.cookie('access_token', accessToken, {
             httpOnly: true,
@@ -38,14 +38,14 @@ class AuthController {
             sameSite: true
         });
 
-        return res.status(200).json({ access_token: accessToken, refresh_token: refreshToken, users: fakedb.db.users });
+        return res.status(200).json({ access_token: accessToken, refresh_token: refreshToken, users: User.db.users });
     }
 
     register = async (req, res) => {
 
         const { username, password } = req.body;
 
-        const user = fakedb.findUserByUsername(username);
+        const user = User.findByUsername(username);
 
         if (user) {
             return res.status(409).send("Username has already been taken.");
@@ -53,9 +53,9 @@ class AuthController {
 
         const hashedPassword = await hash.hashPassword(password);
 
-        fakedb.createUser(username, hashedPassword);
+        User.create(username, hashedPassword);
 
-        return res.json({ message: "User created successfully", users: fakedb.db.users });
+        return res.json({ message: "User created successfully", users: User.db.users });
     }
 }
 
