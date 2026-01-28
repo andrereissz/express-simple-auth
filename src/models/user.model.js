@@ -28,7 +28,7 @@ class User {
         }   
     }
 
-    static findAll() {
+    static listAll() {
         const users = db.users;
         return users;
     }
