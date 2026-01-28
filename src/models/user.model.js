@@ -23,22 +23,25 @@ class User {
     static find(userId) {
         const user = db.users.find(user => user.id == userId);
 
-        if(user) {
+        if (user) {
             return user;
         }   
     }
 
+    static findAll() {
+        const users = db.users;
+        return users;
+    }
+
     static findByUsername(username) {
         const user = db.users.find(user => user.username == username);
-        
-        if(user) {
+        if (user) {
             return user;
         }
     }
 
     static delete(userId) {
         const user = db.users.find(user => user.id == userId);
-
         if (user) {
             db.users.splice(user);
         }
@@ -46,7 +49,6 @@ class User {
 
     static update(userId, data) {
         const user = db.users.find(user => user.id == userId);
-
         if (user) {
             user.username = data.username;
             user.password = data.password;
@@ -55,7 +57,6 @@ class User {
 
     static storeRefreshToken(userId, refreshToken) {
         const user = db.users.find(user => user.id == userId);
-
         if (user) {
             user.refresh_token = refreshToken;
         }
