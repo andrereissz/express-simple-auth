@@ -10,6 +10,7 @@ const userController = new UserController();
 
 router.post('/login', loginChain, authController.login);
 router.post('/register', registerChain, authController.register);
-router.get('/test', auth, userController.index);
+router.post('/logout', auth, authController.logout);
+router.get('/api/users', auth, userController.index);
 
 export default router;

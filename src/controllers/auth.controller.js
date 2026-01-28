@@ -49,6 +49,13 @@ class AuthController {
         return res.json({ message: "User created successfully" });
     }
 
+    logout = async (req, res) => {
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+
+        res.send("You've logged out successfully.");
+    }
+
     generateAccessToken = (userId, username) => {
         const token = jwt.sign({ userId, username }, ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 
